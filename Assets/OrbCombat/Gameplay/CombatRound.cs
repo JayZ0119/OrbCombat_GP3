@@ -1,0 +1,107 @@
+using System;
+using V2 = System.Numerics.Vector2;
+
+namespace OrbCombat
+{
+    public sealed class CombatRound
+    {
+        public const float HalfWidth = 8, HalfDepth = 5;
+        public V2 Player { get; private set; } = new V2(-4, 0);
+        public V2 Enemy { get; private set; } = new V2(4, 0);
+        public V2 Orb { get; private set; }
+        public V2 Direction { get; private set; }
+        public int Health { get; private set; } = 3;
+        public static readonly V2 Spike = new V2(6, 0);
+        public const float SpikeRadius = 0.75f;
+        public bool EnemyDefeated { get; private set; }
+        public float ImpactTimer { get; private set; }
+        private V2 knockback;
+        public bool Flying { get; private set; }
+        public bool Returning { get; private set; }
+        public bool Over => Health == 0 || EnemyDefeated;
+        public float HurtTimer { get; private set; }
+        private float flightTime;
+        private bool touchingPlayer, touchingEnemy;
+
+        public void Launch(V2 aim)
+        {
+            if (Over || Flying || aim.LengthSquared() < 0.001f) return;
+            Direction = V2.Normalize(aim);
+            Orb = Player;
+            Flying = touchingPlayer = true;
+            Returning = touchingEnemy = false;
+            flightTime = 0;
+        }
+
+        public void Step(float dt, V2 movement, V2 aim, bool recall)
+        {
+            if (Over) return;
+            if (movement.LengthSquared() > 1) movement = V2.Normalize(movement);
+            V2 next = Player + movement * (5 * dt);
+            Player = new V2(Math.Clamp(next.X, -7.55f, 7.55f), Math.Clamp(next.Y, -4.55f, 4.55f));
+            V2 chase = Player - Enemy;
+            ImpactTimer = Math.Max(0, ImpactTimer - dt);
+            if (knockback.LengthSquared() > 0.25f)
+            {
+                V2 pushed = Enemy + knockback * dt;
+                Enemy = V2.Clamp(pushed, new V2(-7.5f, -4.5f), new V2(7.5f, 4.5f));
+                knockback *= (float)Math.Exp(-3.0f * dt);
+                if (V2.Distance(Enemy, Spike) <= SpikeRadius + 0.5f)
+                {
+                    EnemyDefeated = true;
+                    return;
+                }
+            }
+            else if (chase.LengthSquared() > 0.01f)
+                Enemy += V2.Normalize(chase) * Math.Min(chase.Length(), 1.9f * dt);
+            HurtTimer -= dt;
+            if ((V2.Distance(Player, Enemy) < 0.9f || V2.Distance(Player, Spike) < SpikeRadius + 0.45f) && HurtTimer <= 0)
+            {
+                Health--;
+                HurtTimer = 1.1f;
+            }
+            if (!Flying || Over) return;
+            flightTime += dt;
+            Returning |= recall || flightTime >= 4;
+            if (Returning)
+            {
+                V2 offset = Player - Orb;
+                if (offset.Length() <= 15 * dt + 0.35f) Flying = Returning = false;
+                else Orb += V2.Normalize(offset) * (15 * dt);
+                return;
+            }
+            V2 point = Orb + Direction * (10 * dt);
+            float dx = Direction.X, dy = Direction.Y;
+            Bounce(ref point.X, ref dx, HalfWidth - 0.24f);
+            Bounce(ref point.Y, ref dy, HalfDepth - 0.24f);
+            Orb = point;
+            Direction = new V2(dx, dy);
+            bool hit = V2.Distance(Orb, Enemy) < 0.78f;
+            if (hit && !touchingEnemy)
+            {
+                V2 offset = Orb - Enemy;
+                V2 normal = offset.LengthSquared() > 0.00001f ? V2.Normalize(offset) : -Direction;
+                Orb = Enemy + normal * 0.79f;
+                if (V2.Dot(Direction, normal) < 0)
+                {
+                    knockback = -normal * 14;
+                    Direction = V2.Reflect(Direction, normal);
+                    ImpactTimer = 0.2f;
+                }
+            }
+            touchingEnemy = hit;
+            bool body = V2.Distance(Orb, Player) < 0.7f;
+            if (body && !touchingPlayer && aim.LengthSquared() > 0.001f)
+                Direction = V2.Normalize(aim);
+            touchingPlayer = body;
+        }
+
+        private static void Bounce(ref float coordinate, ref float speed, float limit)
+        {
+            if (Math.Abs(coordinate) <= limit) return;
+            float edge = Math.Sign(coordinate) * limit;
+            coordinate = 2 * edge - coordinate;
+            speed = -speed;
+        }
+    }
+}
