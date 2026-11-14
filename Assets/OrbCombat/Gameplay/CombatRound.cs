@@ -13,14 +13,18 @@ namespace OrbCombat
         public int Health { get; private set; } = 3;
         public static readonly V2 Spike = new V2(6, 0);
         public const float SpikeRadius = 0.75f;
-        public bool EnemyDefeated { get; private set; }
+        public static readonly V2 BlackHole = new V2(-1, 2.5f);
+        public const float HoleRadius = 0.95f;
+        public const int MaxEnemyHealth = 3;
+        public int EnemyHealth { get; private set; } = MaxEnemyHealth;
+        public bool EnemyDefeated => EnemyHealth == 0;
         public float ImpactTimer { get; private set; }
         private V2 knockback;
         public bool Flying { get; private set; }
         public bool Returning { get; private set; }
         public bool Over => Health == 0 || EnemyDefeated;
         public float HurtTimer { get; private set; }
-        private float flightTime;
+
         private bool touchingPlayer, touchingEnemy;
 
         public void Launch(V2 aim)
@@ -30,7 +34,7 @@ namespace OrbCombat
             Orb = Player;
             Flying = touchingPlayer = true;
             Returning = touchingEnemy = false;
-            flightTime = 0;
+
         }
 
         public void Step(float dt, V2 movement, V2 aim, bool recall)
@@ -46,23 +50,33 @@ namespace OrbCombat
                 V2 pushed = Enemy + knockback * dt;
                 Enemy = V2.Clamp(pushed, new V2(-7.5f, -4.5f), new V2(7.5f, 4.5f));
                 knockback *= (float)Math.Exp(-3.0f * dt);
+                if (V2.Distance(Enemy, BlackHole) <= HoleRadius)
+                {
+                    EnemyHealth = 0;
+                    return;
+                }
                 if (V2.Distance(Enemy, Spike) <= SpikeRadius + 0.5f)
                 {
-                    EnemyDefeated = true;
+                    EnemyHealth--;
+                    V2 outward = Enemy - Spike;
+                    outward = outward.LengthSquared() > 0.0001f ? V2.Normalize(outward) : -V2.UnitX;
+                    Enemy = Spike + outward * (SpikeRadius + 0.55f);
+                    knockback = outward * 5;
+                    ImpactTimer = 0.2f;
                     return;
                 }
             }
             else if (chase.LengthSquared() > 0.01f)
-                Enemy += V2.Normalize(chase) * Math.Min(chase.Length(), 1.9f * dt);
+                Enemy = ChaseStep(chase, dt);
             HurtTimer -= dt;
-            if ((V2.Distance(Player, Enemy) < 0.9f || V2.Distance(Player, Spike) < SpikeRadius + 0.45f) && HurtTimer <= 0)
+            if ((V2.Distance(Player, Enemy) < 0.9f || V2.Distance(Player, Spike) < SpikeRadius + 0.45f || V2.Distance(Player, BlackHole) < HoleRadius) && HurtTimer <= 0)
             {
                 Health--;
                 HurtTimer = 1.1f;
             }
             if (!Flying || Over) return;
-            flightTime += dt;
-            Returning |= recall || flightTime >= 4;
+
+            Returning |= recall;
             if (Returning)
             {
                 V2 offset = Player - Orb;
@@ -94,6 +108,31 @@ namespace OrbCombat
             if (body && !touchingPlayer && aim.LengthSquared() > 0.001f)
                 Direction = V2.Normalize(aim);
             touchingPlayer = body;
+        }
+
+        private V2 ChaseStep(V2 chase, float dt)
+        {
+            V2 forward = V2.Normalize(chase);
+            V2 direction = forward;
+            float nearest = float.MaxValue;
+            Avoid(Spike, SpikeRadius + 0.65f);
+            Avoid(BlackHole, HoleRadius + 0.6f);
+            V2 next = Enemy + direction * Math.Min(chase.Length(), 1.9f * dt);
+            return V2.Clamp(next, new V2(-7.5f, -4.5f), new V2(7.5f, 4.5f));
+
+            void Avoid(V2 center, float clearance)
+            {
+                V2 offset = center - Enemy;
+                float ahead = V2.Dot(offset, forward);
+                if (ahead <= 0 || ahead > chase.Length() + clearance || offset.Length() >= nearest) return;
+                float lateral = forward.X * offset.Y - forward.Y * offset.X;
+                if (Math.Abs(lateral) >= clearance || offset.Length() > clearance + 0.9f) return;
+                nearest = offset.Length();
+                V2 outward = -V2.Normalize(offset);
+                V2 tangent = new V2(-outward.Y, outward.X);
+                if (lateral < 0) tangent = -tangent;
+                direction = V2.Normalize(tangent + outward * Math.Max(0, clearance - nearest));
+            }
         }
 
         private static void Bounce(ref float coordinate, ref float speed, float limit)

@@ -24,6 +24,9 @@ namespace OrbCombat
                 Shape("Side wall", PrimitiveType.Cube, new Vector3(0.2f, 0.55f, 10.4f), Color.gray).position = Vector3.right * (8.1f * side);
                 Shape("End wall", PrimitiveType.Cube, new Vector3(16, 0.55f, 0.2f), Color.gray).position = Vector3.forward * (5.1f * side);
             }
+            float diameter = CombatRound.HoleRadius * 2;
+            Shape("Gravity rim", PrimitiveType.Cylinder, new Vector3(diameter, 0.035f, diameter), new Color(0.6f, 0.25f, 1)).position = Position(CombatRound.BlackHole, 0.025f);
+            Shape("Black hole", PrimitiveType.Cylinder, new Vector3(diameter * 0.84f, 0.04f, diameter * 0.84f), Color.black).position = Position(CombatRound.BlackHole, 0.04f);
             var spike = Shape("Spike trap", PrimitiveType.Sphere, Vector3.one * 1.05f, new Color(0.65f, 0.14f, 0.45f));
             spike.position = Position(CombatRound.Spike, 0.48f);
             for (int i = 0; i < 8; i++)
@@ -97,8 +100,19 @@ namespace OrbCombat
 
         private void OnGUI()
         {
+            if (view != null && !round.EnemyDefeated)
+            {
+                Vector3 anchor = view.WorldToScreenPoint(Position(round.Enemy, 1.35f));
+                Rect bar = new Rect(anchor.x - 25, Screen.height - anchor.y - 5, 50, 7);
+                Color original = GUI.color;
+                GUI.color = Color.black;
+                GUI.DrawTexture(bar, Texture2D.whiteTexture);
+                GUI.color = new Color(1, 0.32f, 0.2f);
+                GUI.DrawTexture(new Rect(bar.x + 1, bar.y + 1, 48f * round.EnemyHealth / CombatRound.MaxEnemyHealth, 5), Texture2D.whiteTexture);
+                GUI.color = original;
+            }
             GUI.Box(new Rect(12, 10, 330, 28), $"Health  {round.Health}/3      Orb  {(round.Returning ? "returning" : round.Flying ? "in play" : "ready")}");
-            GUI.Box(new Rect(12, Screen.height - 52, 410, 46), "WASD move   /   Aim + left click to launch   /   Right click recall\nKnock the chaser into the spike trap. Avoid the spikes!");
+            GUI.Box(new Rect(12, Screen.height - 52, 410, 46), "WASD move   /   Aim + left click to launch   /   Right click recall\nSpikes wound the chaser. The black hole swallows it.");
             if (round.Over)
                 GUI.Box(new Rect(Screen.width / 2 - 115, Screen.height / 2 - 26, 230, 52),
                     (round.Health > 0 ? "Room cleared" : "Defeated") + "\nPress R to play again");
