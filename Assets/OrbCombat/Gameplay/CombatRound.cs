@@ -25,7 +25,7 @@ namespace OrbCombat
         public bool Over => Health == 0 || EnemyDefeated;
         public float HurtTimer { get; private set; }
 
-        private bool touchingPlayer, touchingEnemy;
+        private bool touchingPlayer;
 
         public void Launch(V2 aim)
         {
@@ -33,7 +33,7 @@ namespace OrbCombat
             Direction = V2.Normalize(aim);
             Orb = Player;
             Flying = touchingPlayer = true;
-            Returning = touchingEnemy = false;
+            Returning = false;
 
         }
 
@@ -77,37 +77,53 @@ namespace OrbCombat
             if (!Flying || Over) return;
 
             Returning |= recall;
+            V2 toPlayer = Player - Orb;
+            float travel = 10 * dt;
             if (Returning)
             {
-                V2 offset = Player - Orb;
-                if (offset.Length() <= 15 * dt + 0.35f) Flying = Returning = false;
-                else Orb += V2.Normalize(offset) * (15 * dt);
-                return;
+                float distance = toPlayer.Length();
+                if (distance > 0.0001f) Direction = toPlayer / distance;
+                travel = Math.Min(distance, 15 * dt);
             }
-            V2 point = Orb + Direction * (10 * dt);
+
+            V2 point = Orb + Direction * travel;
             float dx = Direction.X, dy = Direction.Y;
             Bounce(ref point.X, ref dx, HalfWidth - 0.24f);
             Bounce(ref point.Y, ref dy, HalfDepth - 0.24f);
+            V2 wallDirection = new V2(dx, dy);
+            if (Direction != wallDirection) Returning = false;
+            Direction = wallDirection;
             Orb = point;
-            Direction = new V2(dx, dy);
-            bool hit = V2.Distance(Orb, Enemy) < 0.78f;
-            if (hit && !touchingEnemy)
+
+            // The spike is solid. The black hole is a floor hazard.
+            ReflectFrom(Spike, SpikeRadius + 0.24f, out _);
+            if (ReflectFrom(Enemy, 0.78f, out V2 normal))
             {
-                V2 offset = Orb - Enemy;
-                V2 normal = offset.LengthSquared() > 0.00001f ? V2.Normalize(offset) : -Direction;
-                Orb = Enemy + normal * 0.79f;
-                if (V2.Dot(Direction, normal) < 0)
-                {
-                    knockback = -normal * 14;
-                    Direction = V2.Reflect(Direction, normal);
-                    ImpactTimer = 0.2f;
-                }
+                knockback = -normal * 14;
+                ImpactTimer = 0.2f;
             }
-            touchingEnemy = hit;
+            if (Returning && V2.Distance(Orb, Player) <= 0.35f)
+            {
+                Flying = Returning = false;
+                return;
+            }
             bool body = V2.Distance(Orb, Player) < 0.7f;
-            if (body && !touchingPlayer && aim.LengthSquared() > 0.001f)
+            if (!Returning && body && !touchingPlayer && aim.LengthSquared() > 0.001f)
                 Direction = V2.Normalize(aim);
             touchingPlayer = body;
+        }
+
+        private bool ReflectFrom(V2 center, float radius, out V2 normal)
+        {
+            V2 offset = Orb - center;
+            float distance = offset.Length();
+            normal = distance > 0.0001f ? offset / distance : -Direction;
+            if (distance >= radius) return false;
+            Orb = center + normal * (radius + 0.001f);
+            if (V2.Dot(Direction, normal) >= 0) return false;
+            Direction = V2.Reflect(Direction, normal);
+            Returning = false;
+            return true;
         }
 
         private V2 ChaseStep(V2 chase, float dt)
