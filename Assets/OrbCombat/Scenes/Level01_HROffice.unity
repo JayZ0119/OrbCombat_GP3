@@ -3760,7 +3760,9 @@ MonoBehaviour:
   - {fileID: 120033}
   - {fileID: 120043}
   - {fileID: 120053}
-  enemyHealth: 2
+  - {fileID: 829673343}
+  - {fileID: 1479081034}
+  enemyHealth: 3
   enemyHitCooldown: 1.1
   walls:
     serializedVersion: 2
