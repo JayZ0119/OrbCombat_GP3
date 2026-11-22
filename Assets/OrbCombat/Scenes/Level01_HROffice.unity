@@ -132,8 +132,11 @@ GameObject:
   - component: {fileID: 110003}
   - component: {fileID: 110004}
   - component: {fileID: 110005}
+  - component: {fileID: 901101}
+  - component: {fileID: 901103}
+  - component: {fileID: 901102}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Game Manager
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,7 +192,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.5
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1793,6 +1796,8 @@ GameObject:
   - component: {fileID: 110075}
   - component: {fileID: 110076}
   - component: {fileID: 110077}
+  - component: {fileID: 17752329}
+  - component: {fileID: 17752328}
   m_Layer: 0
   m_Name: Player - HR
   m_TagString: Untagged
@@ -1907,6 +1912,8 @@ GameObject:
   - component: {fileID: 110080}
   - component: {fileID: 110081}
   - component: {fileID: 110082}
+  - component: {fileID: 1582740353}
+  - component: {fileID: 1582740352}
   m_Layer: 0
   m_Name: HR Chaser
   m_TagString: Untagged
@@ -2019,8 +2026,12 @@ GameObject:
   - component: {fileID: 110085}
   - component: {fileID: 110086}
   - component: {fileID: 110087}
+  - component: {fileID: 1367706123}
+  - component: {fileID: 1367706122}
+  - component: {fileID: 1367706121}
+  - component: {fileID: 1367706120}
   m_Layer: 0
-  m_Name: Open Office Patrol
+  m_Name: Open Office Chaser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2131,8 +2142,12 @@ GameObject:
   - component: {fileID: 110090}
   - component: {fileID: 110091}
   - component: {fileID: 110092}
+  - component: {fileID: 1188863892}
+  - component: {fileID: 1188863891}
+  - component: {fileID: 1188863890}
+  - component: {fileID: 1188863889}
   m_Layer: 0
-  m_Name: Open Office Chaser
+  m_Name: Open Office Patrol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2240,6 +2255,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 110094}
+  - component: {fileID: 1504761587}
   m_Layer: 0
   m_Name: CEO Mouth - HR Center
   m_TagString: Untagged
@@ -2364,6 +2380,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 110099}
+  - component: {fileID: 98650039}
   m_Layer: 0
   m_Name: CEO Mouth - Open Office
   m_TagString: Untagged
@@ -2491,6 +2508,8 @@ GameObject:
   - component: {fileID: 110105}
   - component: {fileID: 110106}
   - component: {fileID: 110107}
+  - component: {fileID: 114434975}
+  - component: {fileID: 114434974}
   m_Layer: 0
   m_Name: Coffee orb
   m_TagString: Untagged
@@ -2508,7 +2527,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.52, y: 0.7, z: 7}
-  m_LocalScale: {x: 0.48, y: 0.48, z: 0.48}
+  m_LocalScale: {x: 0.764256, y: 0.764256, z: 0.764256}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2620,7 +2639,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.15, y: 0.45, z: 7}
-  m_LocalScale: {x: 0.14, y: 0.14, z: 0.14}
+  m_LocalScale: {x: 0.311303, y: 0.311303, z: 0.311303}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -3395,6 +3414,7 @@ GameObject:
   - component: {fileID: 120032}
   - component: {fileID: 120033}
   - component: {fileID: 120034}
+  - component: {fileID: 120035}
   m_Layer: 2
   m_Name: Shredder tooth 1
   m_TagString: Untagged
@@ -3495,6 +3515,23 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &120035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2300e3f5e5701e84fbf4dfbb231db9c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.ContactHazard
+  hazardColliders:
+  - {fileID: 120033}
+  damage: 1
+  damagePlayer: 1
+  damageEnemies: 1
 --- !u!1 &120040
 GameObject:
   m_ObjectHideFlags: 0
@@ -3507,6 +3544,7 @@ GameObject:
   - component: {fileID: 120042}
   - component: {fileID: 120043}
   - component: {fileID: 120044}
+  - component: {fileID: 120045}
   m_Layer: 2
   m_Name: Shredder tooth 2
   m_TagString: Untagged
@@ -3607,6 +3645,23 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &120045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2300e3f5e5701e84fbf4dfbb231db9c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.ContactHazard
+  hazardColliders:
+  - {fileID: 120043}
+  damage: 1
+  damagePlayer: 1
+  damageEnemies: 1
 --- !u!1 &120050
 GameObject:
   m_ObjectHideFlags: 0
@@ -3619,6 +3674,7 @@ GameObject:
   - component: {fileID: 120052}
   - component: {fileID: 120053}
   - component: {fileID: 120054}
+  - component: {fileID: 120055}
   m_Layer: 2
   m_Name: Shredder tooth 3
   m_TagString: Untagged
@@ -3719,6 +3775,23 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &120055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2300e3f5e5701e84fbf4dfbb231db9c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.ContactHazard
+  hazardColliders:
+  - {fileID: 120053}
+  damage: 1
+  damagePlayer: 1
+  damageEnemies: 1
 --- !u!114 &901100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3726,7 +3799,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 110001}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12256c3bbe27401abe2f2f80ac9407c8, type: 3}
   m_Name: 
@@ -3764,6 +3837,12 @@ MonoBehaviour:
   - {fileID: 1479081034}
   enemyHealth: 3
   enemyHitCooldown: 1.1
+  rotatingTable: {fileID: 0}
+  reboundScreen: {fileID: 0}
+  manager: {fileID: 0}
+  chargeSeconds: 0.65
+  rotationStep: 30
+  sweepSpeed: 18
   walls:
     serializedVersion: 2
     m_Bits: 4
@@ -3772,6 +3851,157 @@ MonoBehaviour:
     bankKnockback: 14
     recoverySeconds: 1.25
   mouthRadius: 1.1
+--- !u!114 &901101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fef1fc10620f0e4f8b4b57e22a45550, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TopDownCameraFollow
+  target: {fileID: 110074}
+  height: 10
+  smoothTime: 0.25
+  enableSway: 1
+  swayAmount: 0.06
+  swaySpeed: 5
+  rotationSway: 0.3
+--- !u!114 &901102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a8380e18759514ca4fafe295638e03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.LevelManager
+  roomName: HR / Open Office
+  nextSceneName: Level02_MeetingRoom
+  walls:
+    serializedVersion: 2
+    m_Bits: 4
+  enemies:
+  - {fileID: 1582740352}
+  - {fileID: 1367706120}
+  - {fileID: 1188863890}
+  blackHoles:
+  - {fileID: 1504761587}
+  - {fileID: 98650039}
+  routePoints:
+  - {fileID: 110114}
+  - {fileID: 110116}
+  - {fileID: 110118}
+  - {fileID: 110120}
+  - {fileID: 110122}
+  - {fileID: 110124}
+  - {fileID: 110126}
+  - {fileID: 110128}
+  - {fileID: 110130}
+  - {fileID: 110132}
+  reboundScreen: {fileID: 0}
+--- !u!114 &901103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b73bf457fed0c142bef31d4dab656e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.GameManager
+  level: {fileID: 901102}
+  player: {fileID: 17752328}
+  playerHealth: {fileID: 17752329}
+  orb: {fileID: 114434974}
+  rotatingTable: {fileID: 0}
+--- !u!114 &17752328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba049d99d1d009a43b3b484ed34ab034, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.PlayerController
+  aimCamera: {fileID: 110003}
+  moveSpeed: 5
+  collisionRadius: 0.45
+  impulseDrag: 3
+--- !u!114 &17752329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99a821d27e4391942a00413cb941a69c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.PlayerHealth
+  maxHealth: 3
+  immunitySeconds: 1.1
+  playerRenderer: {fileID: 110077}
+--- !u!114 &98650039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de497084417c7d04ba20d30c8e888d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.BlackHole
+  baseRadius: 1.1
+--- !u!114 &114434974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30082374e1bdb094ba675ccb4884cb07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.OrbController
+  orbVisual: {fileID: 110104}
+  aimMarker: {fileID: 110109}
+  collision: {fileID: 114434975}
+  orbRenderer: {fileID: 110107}
+  tuning:
+    directKnockback: 8
+    bankKnockback: 8
+    recoverySeconds: 1.25
+  chargeSeconds: 0.65
+  throwSpeed: 10
+  recallSpeed: 15
+--- !u!114 &114434975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1b7d077857a134d813ef6ec119470d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.OrbCollision
 --- !u!1 &829673340
 GameObject:
   m_ObjectHideFlags: 0
@@ -3884,6 +4114,127 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 829673340}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1188863889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7fb9bb74894e1c4bb82f335f5da215b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.EnemyMovement
+  collisionRadius: 0.5
+  impulseDrag: 3
+  bounceFactor: 0.88
+  bounceOffAllWalls: 0
+--- !u!114 &1188863890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8387c96760159149b5c547c72ce8a36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.EnemyBase
+  maxHealth: 3
+  hazardHitCooldown: 1.1
+  enemyRenderer: {fileID: 0}
+--- !u!114 &1188863891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7fb9bb74894e1c4bb82f335f5da215b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.EnemyMovement
+  collisionRadius: 0.5
+  impulseDrag: 3
+  bounceFactor: 0.88
+  bounceOffAllWalls: 0
+--- !u!114 &1188863892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2262fbf5d0a7f244bfcc4c92392b21a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.EnemyPatrol
+  patrolEndpoint: {fileID: 0}
+  moveSpeed: 1.4
+--- !u!114 &1367706120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8387c96760159149b5c547c72ce8a36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.EnemyBase
+  maxHealth: 3
+  hazardHitCooldown: 1.1
+  enemyRenderer: {fileID: 0}
+--- !u!114 &1367706121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee380058a952ce84baca4f191678a722, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.EnemyChase
+  startsChasing: 0
+  detectionRange: 7
+  moveSpeed: 1.9
+--- !u!114 &1367706122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7fb9bb74894e1c4bb82f335f5da215b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.EnemyMovement
+  collisionRadius: 0.5
+  impulseDrag: 3
+  bounceFactor: 0.88
+  bounceOffAllWalls: 0
+--- !u!114 &1367706123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2262fbf5d0a7f244bfcc4c92392b21a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.EnemyPatrol
+  patrolEndpoint: {fileID: 0}
+  moveSpeed: 1.4
 --- !u!1 &1479081031
 GameObject:
   m_ObjectHideFlags: 0
@@ -3996,6 +4347,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479081031}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1504761587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de497084417c7d04ba20d30c8e888d40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.BlackHole
+  baseRadius: 1.1
+--- !u!114 &1582740352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8387c96760159149b5c547c72ce8a36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.EnemyBase
+  maxHealth: 3
+  hazardHitCooldown: 1.1
+  enemyRenderer: {fileID: 0}
+--- !u!114 &1582740353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7fb9bb74894e1c4bb82f335f5da215b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbCombat.EnemyMovement
+  collisionRadius: 0.5
+  impulseDrag: 3
+  bounceFactor: 0.88
+  bounceOffAllWalls: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
